@@ -1,0 +1,16 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+    maven {
+        url "http://dl.bintray.com/konstructs/maven"
+    }
+}
+
+compileJava {
+    sourceCompatibility = 1.7
+}
+
+dependencies {
+    compile group: 'org.konstructs', name: 'konstructs-server-api', version: '0.1.17'
+}
