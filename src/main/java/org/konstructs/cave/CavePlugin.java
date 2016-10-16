@@ -41,7 +41,6 @@ public class CavePlugin extends KonstructsActor {
         for(BlockTypeId block: result.getBlocks()) {
             BlockType type = factory.getBlockType(block);
             if(!STONE_FILTER.matches(block, type)) {
-                System.out.println("Failed cave start");
                 return;
             }
         }

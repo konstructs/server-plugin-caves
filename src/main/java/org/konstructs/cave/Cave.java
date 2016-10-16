@@ -31,7 +31,6 @@ public class Cave extends KonstructsActor {
         this.factory = factory;
         this.config = config;
         this.padding = config.getMinRadius() * 3;
-        System.out.println("New actor: " + this.position + " " + direction);
         makeBoxQuery();
     }
 
@@ -43,12 +42,10 @@ public class Cave extends KonstructsActor {
     }
 
     private void makeBoxQuery() {
-        System.out.println("Make query for: " + generation);
         int padding = (config.getMinRadius() - generation) * 4;
         int numBlocks = (int)Math.pow(2.0, (double)generation);
         Position relative = position.add(direction.getVector().multiply(numBlocks));
         int size = numBlocks + padding;
-        System.out.println(getNonDirectionalVector());
         Position nonDirectionalDimensions =
             getNonDirectionalVector()
             .multiply(size);
@@ -57,24 +54,20 @@ public class Cave extends KonstructsActor {
         Position end = relative
             .add(direction.getVector().multiply(size))
             .add(nonDirectionalDimensions);
-        System.out.println("size: " + size);
         boxShapeQuery(new InclusiveBox(start, end));
     }
 
     private void succeedGeneration() {
-        System.out.println("Succeed generation: " + generation);
         if(generation < config.getMaxGenerations()) {
             generation++;
             makeBoxQuery();
         } else {
             growCave();
             getContext().stop(getSelf());
-            System.out.println("Actor stopped");
         }
     }
 
     private void failGeneration() {
-        System.out.println("Fail generation: " + generation);
         if(generation > config.getMinGenerations()) {
             generation--;
             growCave();
@@ -82,15 +75,12 @@ public class Cave extends KonstructsActor {
         } else {
             getContext().stop(getSelf());
         }
-        System.out.println("Actor stopped");
     }
 
     private void growCave() {
-        System.out.println("Grow cave for: " + generation);
         String cave = "¤¤*½a";
         for(int i = 0;i < generation; i++)
             cave = SYSTEM.iterate(cave);
-        System.out.println(cave);
         replaceBlocks(CavePlugin.FILTER, MACHINE.interpret(cave, position, direction, config.getMinRadius(), 1));
     }
 
